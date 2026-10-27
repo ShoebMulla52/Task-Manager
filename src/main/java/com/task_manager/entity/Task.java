@@ -5,6 +5,8 @@ package com.task_manager.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tasks")
@@ -14,16 +16,18 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Title is required")
+    @Size(max = 100, message = "Title cannot exceed 100 characters")
     @Column(nullable = false, length = 100)
     private String title;
 
+    @Size(max = 500, message = "Description cannot exceed 500 characters")
     @Column(length = 500)
     private String description;
 
     @Column(nullable = false)
     private boolean completed = false;
 
-    // JPA requires a no-argument constructor
     public Task() {
     }
 

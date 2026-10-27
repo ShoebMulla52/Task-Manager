@@ -1,7 +1,7 @@
 package com.task_manager.controller;
 
 
-
+import jakarta.validation.Valid;
 import com.task_manager.entity.Task;
 import com.task_manager.service.TaskService;
 import org.springframework.http.HttpStatus;
@@ -16,13 +16,17 @@ public class TaskController {
 
     private final TaskService taskService;
 
+
+
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
 
     // Create task
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+    public ResponseEntity<Task> createTask(
+            @Valid @RequestBody Task task) {
+
         Task createdTask = taskService.createTask(task);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
     }
@@ -43,9 +47,10 @@ public class TaskController {
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(
             @PathVariable Long id,
-            @RequestBody Task task) {
+            @Valid @RequestBody Task task) {
 
-        return ResponseEntity.ok(taskService.updateTask(id, task));
+        return ResponseEntity.ok(
+                taskService.updateTask(id, task));
     }
 
     // Complete task
